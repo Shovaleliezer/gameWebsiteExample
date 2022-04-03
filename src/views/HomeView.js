@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ContainerOne, SendBetButton, ContainerTwo, Box } from "./style";
+import { ContainerOne, SendBetButton, ContainerHomePage, BoxIcon } from "./style";
 import { setStatus, setAddress } from "../redux/MainReducer";
 import { useSelector, useDispatch } from "react-redux";
 import { useMoralis } from "react-moralis";
@@ -44,10 +44,10 @@ const HomeView = () => {
         }
       }
     return (
-    <ContainerOne>
-        <Box src={`/images/NFTRoulleteIcon.png`}>
+    <ContainerHomePage>
+        <BoxIcon src={`/images/NFTRoulleteIcon.png`}>
           
-        </Box>
+        </BoxIcon>
         <SendBetButton color={"darkorange"} color2={"darkorange"}   borderColor={"brown"}      
         onClick={() => {
             !isAuthenticated
@@ -60,10 +60,10 @@ const HomeView = () => {
                 })
               : handleClick();
           }} >
-            CONNECT
+            CONNECT METAMASK
         </SendBetButton>
         
-    </ContainerOne>   
+    </ContainerHomePage>   
 
     );
 };

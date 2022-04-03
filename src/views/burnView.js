@@ -6,6 +6,7 @@ import { useMoralis } from "react-moralis";
 import BurnViewNormal from "./burnViewNormal"
 import { FaInfoCircle } from 'react-icons/fa';
 import InfoPage from "./InfoPage"
+import WinPage from "./WinPage"
 
 const SwitchCase = (props) => {
     
@@ -97,21 +98,14 @@ const SwitchCase = (props) => {
         case "InfoLegendary":
             return (
                 <InfoPage status={props.status} address= {props.address} />  
-            );       
+            );
+        case "Win":
+            return (
+                <WinPage reward={props.reward} type={props.type}  />  
+            );      
       default:
         return (
-            <ContainerOne>
-                <SendBetButton onClick={() => {dispatch(setStatus("rare"))}}>
-                    Rare Page 
-                </SendBetButton>
-                <SendBetButton onClick={() => {dispatch(setStatus("epic"))}}>
-                    Epic Page
-                </SendBetButton>
-                <SendBetButton onClick={() => {dispatch(setStatus("legendary"))}}>
-                    Legendary Page
-                </SendBetButton>
-                {LogOut()}
-            </ContainerOne>
+                <InfoPage status={props.status} address= {props.address} />  
         );
     }
   };
@@ -119,8 +113,10 @@ const SwitchCase = (props) => {
 const BurnView = () => {
     const status = useSelector((state) => state.fliper.status); 
     const address = useSelector((state) => state.fliper.address); 
+    const type = useSelector((state) => state.fliper.type);
+    const reward = useSelector((state) => state.fliper.reward);
     return (
-        <SwitchCase status={status} address={address}/>
+        <SwitchCase status={status} address={address} reward={reward} type={type}/>
 
     );
 };

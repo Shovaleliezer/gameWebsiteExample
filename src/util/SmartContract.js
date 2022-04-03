@@ -1,7 +1,5 @@
 const Moralis = require("moralis");
 const ethers = Moralis.web3Library;
-
-
 const APP_ID = process.env.REACT_APP_MORALIS_APPLICATION_ID;
 const SERVER_URL = process.env.REACT_APP_MORALIS_SERVER_URL;
 var contractAddress = "";
@@ -745,7 +743,7 @@ export const burnKeys = async (address, use) => {
             else{
                 return {message:"failed", number: 0}
             }
-            return {message:whatGot, number: parseInt(Number(resAfter.length))}
+            return {message:whatGot, type:use, number: parseInt(Number(resAfter.length))}
         }
         return {message:"not enough", number: parseInt(Number(resBefore.length))}
     }

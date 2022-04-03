@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { ContainerOne, SendBetButton, ContainerKeys, ContainerInfo,ContainerLogout, Box, InfoButton, LogOutB } from "./style";
-import { setStatus } from "../redux/MainReducer";
+import { Spinner, ContainerBurnPage, ContainerKeys, ContainerInfo,ContainerLogout, Box, InfoButton, LogOutB } from "./style";
+import { setStatus, setReward } from "../redux/MainReducer";
 import { useSelector, useDispatch } from "react-redux";
 import { useMoralis } from "react-moralis";
 import {getAmountOfKeys, burnKeys} from "../util/SmartContract"
@@ -8,7 +8,7 @@ import { FaWindowClose } from 'react-icons/fa';
 
 const BurnViewNormal = (props) => {
 
-    const [state, setState] = useState("test")
+    const [state, setState] = useState("0")
     const dispatch = useDispatch();
     const changeVal = async () => {
         var val;
@@ -32,19 +32,20 @@ const BurnViewNormal = (props) => {
     }
 
     const callBurn = async () => {
+        setState("Loading");
         console.log("test ", props.status)
         switch (props.status) {
             case "rare":
                 console.log("rare")
-                var {message, number } = await burnKeys(props.address, "rare");
+                var {message,type, number } = await burnKeys(props.address, "rare");
                 break 
             case "epic":
                 console.log("episc")
-                var {message, number } = await burnKeys(props.address, "epic");
+                var {message,type, number } = await burnKeys(props.address, "epic");
                 break 
             case "legendary":
                 console.log("legendary")
-                var {message, number } = await burnKeys(props.address, "legendary");
+                var {message,type, number } = await burnKeys(props.address, "legendary");
                 break 
             case "defult":
                 message = "failed";
@@ -52,35 +53,47 @@ const BurnViewNormal = (props) => {
             }
         if (message=="failed") {
             alert("try again later")
+            changeVal()
         }
         else if (message=="not enough") {
             alert("not enough")
             console.error("not enough")
+            changeVal()
         }
         else if (message=="Energy"){
             // show what got
-            alert("Energy")
+            
+            dispatch(setReward({reward:"energy", type:type}))
+            dispatch(setStatus("Win"));
             setState(number);
         }
         else if (message=="Money"){
             // show what got
-            alert("Money")
+            
+            dispatch(setReward({reward:"energy", type:type}))
+            dispatch(setStatus("Win"));
             setState(number);
         }
         else if (message=="EnergyAndMoney"){
             // show what got
-            alert("Energy And Money")
+            
+            dispatch(setReward({reward:"energy", type:type}));
+            dispatch(setStatus("Win"));
             setState(number);
         }
         else{
             alert("try again later")
+            changeVal()
         }
         
     }
     
     useEffect(() => {
         try {
-            changeVal()
+            if (state!="Loading"){
+                changeVal()
+            }
+            
       
         }catch (error) {
             console.log(error);
@@ -92,7 +105,7 @@ const BurnViewNormal = (props) => {
         if (isAuthenticated || isWeb3Enabled) {
           return (
             <LogOutB color={"red"} color2={"darkred"}   borderColor={"brown"}   
-              onClick={async () => {
+              onClick={async () => {state=="Loading"?alert("please wait for the gift to open"):
                 await logout();
                 window.localStorage.removeItem("connectorId");
               }}
@@ -105,15 +118,15 @@ const BurnViewNormal = (props) => {
       };
     return (
   
-        <ContainerOne>
+        <ContainerBurnPage>
             
             <ContainerInfo>
                 <ContainerKeys>
-                    <FaWindowClose size={80 } style={{color:"black",  marginBottom:"60px" , cursor: "pointer"}} onClick={() => {dispatch(setStatus("normal"))}} />
+                    <FaWindowClose size={80 } style={{color:"red",  marginBottom:"60px" , cursor: "pointer"}} onClick={() => {state=="Loading"?alert("please wait for the gift to open"):dispatch(setStatus("normal"))}} />
                     <Box src={props.status=="rare"?`/images/RareNFT.png`: (props.status=="epic"?`/images/EpicNFT.png`:`/images/LegendaryNFT.png`)}>
                     </Box>
                     <InfoButton color={props.status=="rare"?"#FDBF64": (props.status=="epic"?"#CF67F7":"#EB96FE")} color2={props.status=="rare"?"darkorange": (props.status=="epic"?"#EB96FE":"#73EEFF")}  borderColor={props.status=="rare"?"brown": (props.status=="epic"?"PURPLE":"#25CAEA")}   onClick={() => {callBurn()}}>
-                        {state} / 5
+                        {state=="Loading"? <Spinner></Spinner>: `${state} / 5`}
                     </InfoButton>
                 </ContainerKeys>
             
@@ -122,7 +135,7 @@ const BurnViewNormal = (props) => {
                 {LogOut()}
             </ContainerLogout>
         
-    </ContainerOne>   
+    </ContainerBurnPage>   
     );
 };
 

@@ -5,6 +5,8 @@ export const filperSlice = createSlice({
   initialState: {
     status: "normal",
     address: null,
+    reward: "energy",
+    type: "rare"
   },
   reducers: {
     setStatus: (state, action) => {
@@ -14,6 +16,10 @@ export const filperSlice = createSlice({
     setAddress: (state, action) => {
         state.address = action.payload;
       },
+    setReward: (state, action) => {
+      state.reward = action.payload.reward;
+      state.type = action.payload.type;
+    },
     resetState: (state, action) => {
       state = {
         address: null,
@@ -26,7 +32,8 @@ export const filperSlice = createSlice({
 export const {
   resetState,
   setStatus,
-  setAddress
+  setAddress,
+  setReward
 } = filperSlice.actions;
 
 export default filperSlice.reducer;
