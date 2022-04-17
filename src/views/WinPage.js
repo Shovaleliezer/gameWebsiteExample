@@ -8,7 +8,7 @@ import { FaWindowClose } from 'react-icons/fa';
 
 const WinPage = (props) => {
 
-
+    console.log("props are " + props)
     const dispatch = useDispatch();
     return (
   

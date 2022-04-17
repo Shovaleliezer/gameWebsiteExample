@@ -1,11 +1,13 @@
 const Moralis = require("moralis");
+
+const axios = require('axios');
 const ethers = Moralis.web3Library;
 const APP_ID = process.env.REACT_APP_MORALIS_APPLICATION_ID;
 const SERVER_URL = process.env.REACT_APP_MORALIS_SERVER_URL;
 var contractAddress = "";
-const contractAddressRare = "0x205aA933347aE459C0acb3D3961Bdf0DA0c626ba";
-const contractAddressEpic = "0x6e46dBBA4F1FC0153C2dd7b08CBcc2dceF89EFB5";
-const contractAddressLegend = "0x6E86359EFD7ab66d383cd658770aE2c8f76C98DD";
+const contractAddressRare = "0xEc6b56F739E85Eeb43d4Eb514CaF579b8eE8d69c";
+const contractAddressEpic = "0x8ECeC995c0Cf0c7fE80900819D8F62400C72046B";
+const contractAddressLegend = "0x3B4C14d19e5ae8B0b8914EDa77812CC2029eE381";
 //0x5f79028eb6289cb65f847e9883E503aE79f041dc
 //0x5C2219C0d398C55949a7eD8032CC378Ad5ae0E9a
 Moralis.start({ serverUrl: SERVER_URL, appId: APP_ID });
@@ -125,6 +127,19 @@ const contractABI = [
 		],
 		"name": "Transfer",
 		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "_tokenIds",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "_value",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
 	},
 	{
 		"inputs": [
@@ -653,7 +668,6 @@ const contractABI = [
 		"type": "function"
 	}
 ];
-
 export const getAmountOfKeys = async (address, use) => {  
     try {
         if(use=="legendary"){
@@ -698,6 +712,7 @@ export const burnKeys = async (address, use) => {
         }
         console.log("sending to ", contractAddress)
         const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+		console.log("provider ", provider)
         const PCFContractRead = new ethers.Contract(
           contractAddress,
           contractABI,
@@ -715,7 +730,7 @@ export const burnKeys = async (address, use) => {
             nonce: await provider.getTransactionCount(address, "latest"),
             gasLimit: ethers.utils.hexlify(250000),
             gasPrice: ethers.utils.hexlify(
-              parseInt((await provider.getGasPrice()) * 20)
+              parseInt((await provider.getGasPrice()) * 2)
             ),
           };
         var resBefore = await PCFContractRead.walletOfOwner(address)
@@ -724,18 +739,20 @@ export const burnKeys = async (address, use) => {
         
         if(resBefore.length>=5){
             console.log(`info address is ${contractAddress} and res tokens are ${resBefore.slice(0, 5)}`)
-            const res = await PCFContract.burn(resBefore.slice(0, 5), tx) 
+            const res = await PCFContract.burn(resBefore.slice(0, 5)) 
             console.log("test1")
             await res.wait()
             console.log("test2")
             const resAfter = await PCFContractRead.walletOfOwner(address)
             const number = getRandomNumberBetween(0, 10000)
+			console.log("num ", number)
             var whatGot;
             if ( 0 <= number < 6000){
                 whatGot = "Energy"
             }
             else if ( 6000 <= number < 9000){
                 whatGot = "Money"
+				//http://localhost:3000/HandleUsers/addReward/${address}
             }
             else if ( 9000 <= number <= 10000){
                 whatGot = "EnergyAndMoney"
@@ -743,6 +760,24 @@ export const burnKeys = async (address, use) => {
             else{
                 return {message:"failed", number: 0}
             }
+			const data = {
+				"mess": whatGot,
+				"type" : use
+			};
+			console.log("data ", data);
+			console.log("address is " + address)
+
+
+
+			axios.post(`http://localhost:3000/HandleUsers/addReward/${address}`, data)
+			.then((res) => {
+				console.log(`Status: ${res.status}`);
+			}).catch((err) => {
+				console.error(err);
+			});
+
+
+
             return {message:whatGot, type:use, number: parseInt(Number(resAfter.length))}
         }
         return {message:"not enough", number: parseInt(Number(resBefore.length))}

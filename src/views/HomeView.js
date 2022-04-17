@@ -29,7 +29,7 @@ const HomeView = () => {
       if (Moralis.getChainId() === process.env.REACT_APP_CHAINID) {
         dispatch(setStatus("normal"));
       } else {
-        console.log("error")
+        console.log("error ",Moralis.getChainId(), process.env.REACT_APP_CHAINID )
       }
     };
 

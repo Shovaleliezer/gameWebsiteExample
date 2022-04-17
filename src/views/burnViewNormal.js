@@ -70,14 +70,14 @@ const BurnViewNormal = (props) => {
         else if (message=="Money"){
             // show what got
             
-            dispatch(setReward({reward:"energy", type:type}))
+            dispatch(setReward({reward:"Money", type:type}))
             dispatch(setStatus("Win"));
             setState(number);
         }
         else if (message=="EnergyAndMoney"){
             // show what got
             
-            dispatch(setReward({reward:"energy", type:type}));
+            dispatch(setReward({reward:"MoneyAndEnergy", type:type}));
             dispatch(setStatus("Win"));
             setState(number);
         }
