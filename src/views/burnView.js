@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ContainerOne, SendBetButton, ContainerKeys, ContainerInfo,ContainerLogout, Box, InfoButton, LogOutB } from "./style";
 import { setStatus, setAddress, setChainId } from "../redux/MainReducer";
 import { useSelector, useDispatch } from "react-redux";
-import { useMoralis } from "react-moralis";
+
 import BurnViewNormal from "./burnViewNormal"
 import { FaInfoCircle } from 'react-icons/fa';
 import InfoPage from "./InfoPage"
@@ -26,8 +26,7 @@ const SwitchCase = (props) => {
         dispatch(setChainId(networkId))
       });
     const dispatch = useDispatch();
-    const { Moralis, isWeb3Enabled, authenticate, isAuthenticated, logout } =
-    useMoralis();
+
     const LogOut = () => {
    
           return (

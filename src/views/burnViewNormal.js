@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Spinner, ContainerBurnPage, ContainerKeys, ContainerInfo,ContainerLogout, Box, InfoButton, LogOutB } from "./style";
 import { setStatus, setReward } from "../redux/MainReducer";
 import { useSelector, useDispatch } from "react-redux";
-import { useMoralis } from "react-moralis";
+
 import {getAmountOfKeys, burnKeys} from "../util/SmartContract"
 import { FaWindowClose } from 'react-icons/fa';
 
@@ -99,8 +99,7 @@ const BurnViewNormal = (props) => {
             console.log(error);
             setState("0");
     }});
-    const { Moralis, isWeb3Enabled, authenticate, isAuthenticated, logout } =
-    useMoralis();
+
     const LogOut = () => {
    
         return (

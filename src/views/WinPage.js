@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ContainerReward, ContainerInfoPage, ContainerKeys, ContainerInfo,CollectButton, BoxInfo, Box, BoxReward } from "./style";
 import { setStatus } from "../redux/MainReducer";
 import { useSelector, useDispatch } from "react-redux";
-import { useMoralis } from "react-moralis";
+
 import {getAmountOfKeys, burnKeys} from "../util/SmartContract"
 import { FaWindowClose } from 'react-icons/fa';
 
