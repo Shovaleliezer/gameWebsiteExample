@@ -10,7 +10,6 @@ const contractAddressEpic = "0x8ECeC995c0Cf0c7fE80900819D8F62400C72046B";
 const contractAddressLegend = "0x3B4C14d19e5ae8B0b8914EDa77812CC2029eE381";
 //0x5f79028eb6289cb65f847e9883E503aE79f041dc
 //0x5C2219C0d398C55949a7eD8032CC378Ad5ae0E9a
-Moralis.start({ serverUrl: SERVER_URL, appId: APP_ID });
 
 const contractABI = [
 	{

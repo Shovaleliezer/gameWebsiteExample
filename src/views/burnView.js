@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ContainerOne, SendBetButton, ContainerKeys, ContainerInfo,ContainerLogout, Box, InfoButton, LogOutB } from "./style";
-import { setStatus } from "../redux/MainReducer";
+import { setStatus, setAddress, setChainId } from "../redux/MainReducer";
 import { useSelector, useDispatch } from "react-redux";
 import { useMoralis } from "react-moralis";
 import BurnViewNormal from "./burnViewNormal"
@@ -9,24 +9,38 @@ import InfoPage from "./InfoPage"
 import WinPage from "./WinPage"
 
 const SwitchCase = (props) => {
-    
+    const { ethereum } = window;
+    ethereum.on("accountsChanged", (accounts) => {
+      
+        console.log(accounts[0]);
+        
+        dispatch(setAddress(accounts[0]))
+      });
+      ethereum.on("chainChanged", async () => {
+
+
+          const networkId = await ethereum.request({
+            method: "net_version",
+          });
+        window.location.reload();
+        dispatch(setChainId(networkId))
+      });
     const dispatch = useDispatch();
     const { Moralis, isWeb3Enabled, authenticate, isAuthenticated, logout } =
     useMoralis();
     const LogOut = () => {
-        if (isAuthenticated || isWeb3Enabled) {
+   
           return (
-            <LogOutB color={"red"} color2={"darkred"}   borderColor={"brown"}   
+            <LogOutB color={"lime"} color2={"seagreen"}   borderColor={"darkgreen"}   
               onClick={async () => {
-                await logout();
-                window.localStorage.removeItem("connectorId");
+               
               }}
             >
                {String(props.address).substring(0, 4)} .. {String(props.address).substring(38, 42)}
             </LogOutB>
           );
-        }
-        return <div></div>;
+        
+    
       };
 
     switch (props.status) {

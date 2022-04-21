@@ -102,20 +102,19 @@ const BurnViewNormal = (props) => {
     const { Moralis, isWeb3Enabled, authenticate, isAuthenticated, logout } =
     useMoralis();
     const LogOut = () => {
-        if (isAuthenticated || isWeb3Enabled) {
-          return (
-            <LogOutB color={"red"} color2={"darkred"}   borderColor={"brown"}   
-              onClick={async () => {state=="Loading"?alert("please wait for the gift to open"):
-                await logout();
-                window.localStorage.removeItem("connectorId");
-              }}
-            >
-               {String(props.address).substring(0, 4)} .. {String(props.address).substring(38, 42)}
-            </LogOutB>
-          );
-        }
-        return <div></div>;
-      };
+   
+        return (
+          <LogOutB color={"lime"} color2={"seagreen"}   borderColor={"darkgreen"}   
+            onClick={async () => {
+             
+            }}
+          >
+             {String(props.address).substring(0, 4)} .. {String(props.address).substring(38, 42)}
+          </LogOutB>
+        );
+      
+  
+    };
     return (
   
         <ContainerBurnPage>

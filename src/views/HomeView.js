@@ -1,48 +1,55 @@
 import React, { useState, useEffect } from "react";
 import { ContainerOne, SendBetButton, ContainerHomePage, BoxIcon } from "./style";
-import { setStatus, setAddress } from "../redux/MainReducer";
+import { setStatus, setAddress, setChainId } from "../redux/MainReducer";
 import { useSelector, useDispatch } from "react-redux";
-import { useMoralis } from "react-moralis";
-
-
 const HomeView = () => {
-    const status = useSelector((state) => state.fliper.status); 
-    const [isMatic, setIsMatic] = useState(false);
-    const userAddress = useSelector((state) => state.fliper.address);
-  
-    const dispatch = useDispatch();
-  
-    const { Moralis, isWeb3Enabled, authenticate, isAuthenticated, logout } =
-      useMoralis();
-  
-    useEffect(() => {
-      const unsub = Moralis.onWeb3Enabled(async (args) => {
-        dispatch(setAddress(args.account));
-      });
-      return () => {
-        unsub();
-      };
-    }, [Moralis]);
-  
-  
-    const handleClick = async () => {
-      if (Moralis.getChainId() === process.env.REACT_APP_CHAINID) {
-        dispatch(setStatus("normal"));
-      } else {
-        console.log("error ",Moralis.getChainId(), process.env.REACT_APP_CHAINID )
-      }
-    };
-
-    function handleEthereum() {
-        const { ethereum } = window;
-        if (ethereum && ethereum.isMetaMask) {
-          // console.log("Ethereum successfully detected!");
-          // Access the decentralized web!
-        } else {
-          // alert("Play on Metamask browser!");
-          window.location.href = "https://metamask.app.link/dapp/maticplay.io";
+  const dispatch = useDispatch();
+  const connect = async () => {
+    
+      console.log("t", window);
+      const { ethereum } = window;
+      console.log("t", ethereum);
+      const metamaskIsInstalled = ethereum && ethereum.isMetaMask;
+      if (metamaskIsInstalled) {
+    
+        
+        try {
+          const accounts = await ethereum.request({
+            method: "eth_requestAccounts",
+          });
+          console.log(accounts, " t");
+          const networkId = await ethereum.request({
+            method: "net_version",
+          });
+          console.log(accounts, " t");
+          if (networkId == "137") { 
+            dispatch(setAddress(accounts[0]))
+            dispatch(setChainId(networkId))
+            console.log(accounts[0], networkId)
+            // Add listeners start
+            ethereum.on("accountsChanged", (accounts) => {
+              console.log(accounts[0]);
+              dispatch(setAddress(accounts[0]))
+            });
+            ethereum.on("chainChanged", () => {
+              window.location.reload();
+              dispatch(setChainId(networkId))
+            });
+            // Add listeners end
+          } else {
+            console.log(`Change network to matic.`);
+          }
+        } catch (err) {
+          console.log("Something went wrong.");
         }
+      } else {
+        console.log("Install Metamask.");
       }
+    
+  };
+  
+
+
     return (
     <ContainerHomePage>
         <BoxIcon src={`/images/NFTRoulleteIcon.png`}>
@@ -50,15 +57,8 @@ const HomeView = () => {
         </BoxIcon>
         <SendBetButton color={"darkorange"} color2={"darkorange"}   borderColor={"brown"}      
         onClick={() => {
-            !isAuthenticated
-              ? authenticate({
-                  provider: "metamask",
-                  chainId: 80001,
-                  onSuccess: (arg) => {
-                    handleClick();
-                  },
-                })
-              : handleClick();
+          console.log('test1');
+          connect();
           }} >
             CONNECT METAMASK
         </SendBetButton>
