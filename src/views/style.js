@@ -61,6 +61,7 @@ export const ContainerBurnPage = styled.div`
   justify-content: center;
   background: url(/images/Landing-Page-BG1.png) no-repeat center fixed;
   height: 100vh;
+  overflow: scroll;
   width:100%;
   @media (max-width: 400px) {
     height: 105vh;
@@ -103,6 +104,7 @@ export const ContainerOne = styled.div`
   text-align: center;
   display: flex;
   flex-direction: column;
+  overflow: scroll;
   align-items: center;
   justify-content: center;
   background: url(/images/Landing-Page-BG1.png) no-repeat center fixed;
