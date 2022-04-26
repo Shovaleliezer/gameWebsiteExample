@@ -38,12 +38,15 @@ const HomeView = () => {
             // Add listeners end
           } else {
             console.log(`Change network to matic.`);
+            alert("Change network to matic.")
           }
         } catch (err) {
           console.log("Something went wrong.");
         }
       } else {
-        console.log("Install Metamask.");
+        alert("Open metamask")
+        window.open("https://metamask.app.link/dapp/my-app-2-bmlfa.ondigitalocean.app/");
+        
       }
     
   };
