@@ -121,7 +121,7 @@ const BurnViewNormal = (props) => {
             <ContainerInfo>
                 <ContainerKeys>
                     <FaWindowClose size={80 } style={{color:"red",  marginBottom:"60px" , cursor: "pointer"}} onClick={() => {state=="Loading"?alert("please wait for the gift to open"):dispatch(setStatus("normal"))}} />
-                    <Box src={props.status=="rare"?`/images/RareNFT.png`: (props.status=="epic"?`/images/EpicNFT.png`:`/images/LegendaryNFT.png`)}>
+                    <Box onClick={() => {state=="Loading"?alert("please wait for the gift to open"):dispatch(setStatus("normal"))}}  src={props.status=="rare"?`/images/RareNFT.png`: (props.status=="epic"?`/images/EpicNFT.png`:`/images/LegendaryNFT.png`)}>
                     </Box>
                     <InfoButton color={props.status=="rare"?"#FDBF64": (props.status=="epic"?"#CF67F7":"#EB96FE")} color2={props.status=="rare"?"darkorange": (props.status=="epic"?"#EB96FE":"#73EEFF")}  borderColor={props.status=="rare"?"brown": (props.status=="epic"?"PURPLE":"#25CAEA")}   onClick={() => {callBurn()}}>
                         {state=="Loading"? <Spinner></Spinner>: `${state} / 5`}
