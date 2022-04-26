@@ -62,6 +62,14 @@ export const ContainerBurnPage = styled.div`
     height: 140vh;
     
   }
+  @media (max-height: 600px) {
+    height: 200vh;
+    
+  }
+  @media (max-height: 410px) {
+    height: 300vh;
+    
+  }
 `;
 export const ContainerReward = styled.div`
   text-align: center;
