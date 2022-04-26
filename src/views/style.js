@@ -44,6 +44,14 @@ export const ContainerInfoPage = styled.div`
     height: 140vh;
     
   }
+  @media (max-height: 600px) {
+    height: 200vh;
+    
+  }
+  @media (max-height: 410px) {
+    height: 300vh;
+    
+  }
 `;
 export const ContainerBurnPage = styled.div`
   text-align: center;
@@ -100,18 +108,32 @@ export const ContainerOne = styled.div`
   background: url(/images/Landing-Page-BG1.png) no-repeat center fixed;
   height: 100vh;
   width:100%;
-
-  @media (max-width: 1050px) {
-    height: 200vh;
+  @media (max-width: 450px) {
+    height: 110vh;
     
   }
-  @media (max-width: 700px) {
-    height: 300vh;
+  @media (max-width: 410px) {
+    height: 115vh;
     
   }
   @media (max-width: 380px) {
-    height: 380vh;
+    height: 140vh;
     
+  }
+  @media (max-height: 950px) {
+    height: 330vh;
+    
+  }
+  @media (max-height: 900px) {
+    height: 330vh;
+    
+  }
+  @media (max-height: 600px) {
+    height: 500vh;
+    
+  }
+  @media (max-height: 410px) {
+    height: 600vh;
   }
 
 `;
